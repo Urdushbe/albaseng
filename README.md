@@ -6,7 +6,7 @@
 * JavaScript – Dynamic interactions and real-time updates
 * SSQL/MySQL – Database management and data optimization
 * HTML/CSS – Clean and easy-to-use UI
-
-INSTALL
-pip install PyMySQL
-pyhon manage.py runserver
+  
+* INSTALL
+* pip install PyMySQL
+* python manage.py runserver
