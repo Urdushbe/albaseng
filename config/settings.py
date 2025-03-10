@@ -74,6 +74,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
+
+# If you need to use MySQL, use this configuration.
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'your_database_name',  # MySQL bazangiz nomi
+#         'USER': 'your_mysql_user',  # MySQL foydalanuvchi nomi
+#         'PASSWORD': 'your_mysql_password',  # MySQL parolingiz
+#         'HOST': 'localhost',  # Server manzili (agar lokal bo‘lsa)
+#         'PORT': '3306',  # MySQL standarti bo‘yicha 3306
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         }
+#     }
+# }
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -122,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
-STATIC_ROOT = '/home/urdushbe/public_html/static'
+STATIC_ROOT = '/home/urdush/alba/static'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Default primary key field type
@@ -151,5 +168,7 @@ def load_global_language():
                     lang_dict[key] = value
     return lang_dict
 
+
+# LANGUAGES SOON...Testing...
 # `.lang` fayldagi tarjimalarni butun loyiha uchun yuklaymiz
 GLOBAL_LANG = load_global_language()
