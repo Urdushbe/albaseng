@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Regionlar{% endblock title %}
+
+{% block content %}
+    <div class="list-group marginuz">
+        {% for region in regions %}
+            <a href="" class="list-group-item list-group-item-action activeuz" aria-current="true">
+                {{ region.name }} <span class="span-right text-danger">+27</span>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock content %}

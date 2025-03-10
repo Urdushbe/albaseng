@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Edit information{% endblock title %}
+
+{% block content %}
+    <div class="list-group marginuz">
+        <div class="list-group-item bg-detail text-dark">
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <form method="post">{% csrf_token %}
+
+                        <label class="form-label" for="id_username" >Login</label>
+                        <input class="form-control" type="text" name="username" value="{{ user.username }}"
+                               maxlength="30" required id="id_username">
+                        <br>
+                        <label class="form-label" for="id_last_name">Last name</label>
+                        <input class="form-control" type="text" name="last_name" value="{{ user.last_name }}"
+                               maxlength="30"
+                               id="id_last_name">
+                        <br>
+                        <label class="form-label" for="id_first_name">First name</label>
+                        <input class="form-control" type="text" name="first_name" value="{{ user.first_name }}"
+                               maxlength="30" id="id_first_name">
+                        <br>
+                        <label class="form-label" for="id_email">Email</label>
+                        <input class="form-control" type="email" name="email" value="{{ user.email }}"
+                               maxlength="50"
+                               id="id_email">
+                        <br>
+                        <label class="form-label" for="id_phone_number">Phone number</label>
+                        <input class="form-control" type="text" name="phone_number"
+                               value="{{ user.phone_number }}" maxlength="20"
+                               required
+                               id="id_phone_number">
+                        <br>
+                        <label class="form-label" for="id_telegram">Bio</label>
+                        <textarea class="form-control" maxlength="500" style="height: 200px;"
+                                  name="telegram">{{ user.telegram }}</textarea>
+                        <br>
+                        <button class="btn btn-primary" type="submit">Edit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

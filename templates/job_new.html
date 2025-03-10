@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}Post a job listing{% endblock title %}
+
+
+{% block content %}
+    <div class="list-group marginuz">
+        <div class="list-group-item bg-detail text-dark">
+{% if form.errors %}
+    <div class="alert alert-danger mt-3">
+        <strong>Error:</strong>
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% if error_message %}
+    <div class="alert alert-danger mt-3">
+        {{ error_message }}
+    </div>
+{% endif %}
+
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <form method="post">{% csrf_token %}
+                        <label for="id_name" class="form-label">Job Title</label>
+                        <input class="form-control" type="text" id="id_name" name="name" oninput="this.value = this.value.slice(0, 87)" required>
+                        <br>
+                        <label class="form-label" for="id_salary">Salary ₩</label><br>
+                        <select class="form-select" name="salary_period" id="id_salary_period">
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="daily">Daily</option>
+                            <option value="hourly">Hourly</option>
+                        </select><br>
+                        <input class="form-control" type="number"  placeholder="150.000 won" id="id_salary"
+                               name="salary"
+                               required oninput="this.value = this.value.slice(0, 10)" onblur="formatSalary()">
+
+
+                        <br>
+                        <label class="form-label" for="id_start_time">Start Time</label>
+                        <input class="form-control" type="time" id="id_start_time" name="start_time" value="08:00">
+                        <br>
+                        <label class="form-label" for="id_end_time">End Time</label>
+                        <input class="form-control" type="time" id="id_end_time" name="end_time" value="18:00">
+                        <br>
+                        <label class="form-label" for="id_phone_number">Phone Number</label>
+                        <input class="form-control" type="text" id="id_phone_number" value="{{ user.phone_number }}"
+                               name="phone_number" oninput="this.value = this.value.slice(0, 20)" required>
+                        <br>
+                        <label class="form-label" for="id_address">Address (or Approximate Location)</label>
+                        <input class="form-control" type="text" oninput="this.value = this.value.slice(0, 150)" id="id_address" name="address" required>
+                        <br>
+                        <label class="form-label " for="id_region">Region</label>
+                        <select class="form-select" aria-label="Default" id="id_region" name="region" required>
+                            <option value="">----------</option>
+                            {% for region in regions %}
+                                <option value="{{ region.pk }}">{{ region.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <label class="form-label" for="id_city">City</label>
+                        <select class="form-select" aria-label="Default" id="id_city" name="city" required>
+                            <option value="">----------</option>
+                        </select>
+                        <br>
+                        <label class="form-label" for="id_description">Additional Information</label><br>
+                        <textarea class="form-control" style="height: 200px;" id="id_description"
+                                  name="description" oninput="this.value = this.value.slice(0, 4900)" required></textarea>
+                        <br>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#id_region').change(function () {
+                var regionId = $(this).val();
+                if (regionId) {
+                    $.ajax({
+                        url: '/city_id/' + regionId + '/',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            var citySelect = $('#id_city');
+                            citySelect.empty();
+                            if (data.length > 0) {
+                                $.each(data, function (key, value) {
+                                    citySelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                                });
+                            } else {
+                                citySelect.append('<option value="">----------</option>');
+                            }
+                        }
+                    });
+                } else {
+                    $('#id_city').empty();
+                }
+            });
+        });
+    </script>
+    <script>
+        function formatSalary() {
+            // Input elementini tanlaymiz
+            var input = document.getElementById('id_salary');
+
+            if (input.value) {
+                // Kiritilgan qiymatni olish
+                var salary = input.value;
+
+// Qiymatni raqamga o'girish va to'g'ri formatlash
+                var formattedSalary = parseFloat(salary.replace(/ /g, '').replace(/,/g, '').replace(/\./g, '').replace(/,/g, '.'));
+
+// Ko'rsatish uchun "formattedSalary" o'zgaruvchisini foydalaning
+                input.value = formattedSalary.toLocaleString('en-US');
+
+                // Input qiymatini yangilash
+                input.value = formattedSalary;
+            }
+        }
+
+
+    </script>
+
+
+
+{% endblock %}

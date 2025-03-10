@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}{{ user_profile.username }} | Profile{% endblock title %}
+{% block content %}
+
+
+    <!-- for user -->
+    {% if user.username == user_profile.username %}
+        <div class="list-group marginuz">
+            <div class="list-group-item bg-detail text-dark">
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="16" height="16" fill="currentColor"
+                         class="bi bi-person-fill"
+                         viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path>
+                    </svg> {{ user.last_name }} {{ user.first_name }}
+                </h3>
+                <p>Login: {{ user_profile.username }}</p>
+                <p>Email: {{ user_profile.email }}</p>
+                <p>Phone: {{ user_profile.phone_number }}</p>
+                <p>Bio: {{ user_profile.telegram }}</p>
+                {% if user.first_name|length < 3 or user.last_name|length < 3 %}
+                    <p class="text-danger">The form is not fully completed! <a
+                            href="{% url 'user_profile_update' user.pk %}">->Edit</a></p>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="list-group marginuz">
+            <div class="list-group-item bg-detail text-dark">
+                <p><a href="{% url 'user_job_list' user_profile.username %}">My listings</a></p>
+                <p><a href="{% url 'support' %}">Support Center</a></p>
+                <hr>
+                <p><a href="{% url 'user_profile_update' user.pk %}">Edit information</a></p>
+                <p><a href="{% url 'password_change' %}">Change password</a></p>
+                <p><a href="{% url 'exit' %}" class="text-danger">Logout</a></p>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- for not user -->
+        <div class="list-group marginuz col-sm-none">
+            <div class="list-group-item bg-detail text-dark">
+                <h5>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="16" height="16" fill="currentColor"
+                         class="bi bi-person-fill"
+                         viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path>
+                    </svg>
+                    {{ user_profile.username }}</h5>
+                <hr>
+                <p>ID: {{ user_profile.id }}</p>
+                <p>Name: {{ user_profile.last_name }} {{ user_profile.first_name }}</p>
+                <p>Bio: {{ user_profile.telegram }}</p>
+                <a href="{% url 'user_job_list' user_profile.username %}">Listings posted by this user</a><br>
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

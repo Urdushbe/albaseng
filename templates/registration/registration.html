@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}{{ lang.register }}{% endblock title %}
+
+{% block content %}
+<div class="list-group marginuz">
+    <div class="list-group-item bg-detail text-dark">
+        <div class="row">
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xxl-3">
+                <form method="POST">{% csrf_token %}
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger mt-3">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        {{ error }}<br>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+
+
+                    <label class="form-label" for="id_username">{{ lang.login }}</label>
+                    <input class="form-control " type="text" value="{{ request.POST.username }}" name="username"
+                        maxlength="30" autofocus required id="id_username" style="text-transform: lowercase;">
+                    <br>
+                    <label class="form-label" for="id_phone_number">{{ lang.phone_number }}</label>
+                    <input class="form-control " type="text" name="phone_number" maxlength="20"
+                        value="{% if request.POST.phone_number %}{{ request.POST.phone_number }}{% else %}{{ lang.kr_phone }}{% endif %}"
+                        required id="id_phone_number">
+                    <br>
+                    <label class="form-label" for="id_password1">{{ lang.password }}</label>
+                    <input class="form-control " type="password" name="password1" autocomplete="new-password" required
+                        id="id_password1" maxlength="30">
+                    <br>
+                    <label class="form-label" for="id_password2">{{ lang.confirm_password }}</label>
+                    <input class="form-control" type="password" name="password2" autocomplete="new-password" required
+                        id="id_password2" maxlength="30">
+                    <br>
+
+                    <button class="btn btn-primary" type="submit">{{ lang.register }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

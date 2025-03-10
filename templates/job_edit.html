@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}Edit post{% endblock title %}
+
+{% block content %}
+
+    <div class="list-group marginuz">
+        <div class="list-group-item bg-detail text-dark">
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <form method="post">{% csrf_token %}
+                        <label class="form-label" for="id_name">Job title</label>
+                        <input class="form-control" type="text" name="name" value="{{ object.name }}"
+                               oninput="this.value = this.value.slice(0, 87)"
+                               required id="id_name">
+
+                        </p>
+
+                        <p>
+                            <label class="form-label" for="id_start_time">Start time</label>
+
+                                <input class="form-control" type="time" name="start_time" placeholder="hh:mm"
+                                       value="{{ object.start_time|date:'H:i' }}" required id="id_start_time">
+
+                        </p>
+
+
+                        <p>
+                            <label class="form-label" for="id_start_time">End time</label>
+                                <input class="form-control" type="time" name="end_time" placeholder="HH:mm"
+                                       value="{{ object.end_time|date:'H:i' }}" required id="id_end_time">
+                        </p>
+
+
+                        <p>
+                            <label class="form-label" for="id_phone_number">Phone number</label>
+                            <input class="form-control" type="text" name="phone_number"
+                                   value="{{ object.phone_number }}" maxlength="20" required
+                                   id="id_phone_number">
+
+
+                        </p>
+
+
+                       
+                            <label class="form-label" for="id_salary">Salary</label>
+                    
+                            <p>
+                            <select class="form-select" name="salary_period" required id="id_salary_period">
+                                <option value="">---------</option>
+
+                                <option value="hourly" {% if object.salary_period == "hourly" %}selected{% endif %}>
+                                    Hourly
+                                </option>
+
+                                <option value="daily" {% if object.salary_period == "daily" %}selected{% endif %}>Daily
+                                </option>
+
+                                <option value="weekly" {% if object.salary_period == "weekly" %}selected{% endif %}>
+                                    Weekly
+                                </option>
+
+                                <option value="monthly" {% if object.salary_period == "monthly" %}selected{% endif %}>
+                                    Monthly
+                                </option>
+
+                            </select>
+                            </p>
+                            <p>
+                            <input class="form-control" type="text" name="salary" value="{{ object.salary }}"
+                                   oninput="this.value = this.value.slice(0, 10)"
+                                   required onblur="formatSalary()" id="id_salary">
+
+                        </p>
+
+                
+
+
+                        <p>
+                            <label class="form-label" for="id_address">Address</label>
+                            <input class="form-control" type="text" name="address" value="{{ object.address }}"
+                                   oninput="this.value = this.value.slice(0, 150)" required
+                                   id="id_address">
+
+
+                            <label class="form-label " for="id_region">Region</label>
+                            <select class="form-select" aria-label="Default" id="id_region" name="region">
+                                <option value="">----------</option>
+                                {% for region in regions %}
+                                    <option value="{{ region.pk }}"
+                                            {% if object.region.pk == region.pk %}selected{% endif %}>{{ region.name }}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label class="form-label" for="id_city">City</label>
+                            <select class="form-select" aria-label="Default" id="id_city" name="city">
+                                <option value="">----------</option>
+                            </select>
+                            <br>
+                        <p>
+                            <label class="form-label" for="id_description">Additional Information</label>
+
+                            <textarea class="form-control" style="height: 200px;" maxlength="4500"
+                                      name="description" id="yourTextareaId" rows="4"
+                                      cols="50">{{ object.description | linebreaksbr }}</textarea>
+                            <br>
+
+                            <script>
+
+                                // Sahifani yuklandiğida textarea ichidagi <br> larni \n ga o'zgartirish
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var textarea = document.getElementById("yourTextareaId");
+                                    var text = textarea.value;
+                                    var newText = text.replace(/<br>/g, "\n"); // <br> ni \n ga o'zgartirish
+                                    textarea.value = newText;
+                                });
+                            </script>
+                        </p>
+
+
+                        <button class="btn btn-primary" type="submit" onclick="convertAndSubmit()">Edit
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Viloyat select o'zgaruvchisini tanlash
+            var regionSelect = $('#id_region');
+            // Shahar select o'zgaruvchisini tanlash
+            var citySelect = $('#id_city');
+
+            // Viloyat o'zgaruvchisida o'zgarish bo'lganda
+            regionSelect.change(function () {
+                var regionId = $(this).val();
+                if (regionId) {
+                    // AJAX so'rovni jo'natish
+                    $.ajax({
+                        url: '/city_id/' + regionId + '/',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            // Shahar selectni bo'satish
+                            citySelect.empty();
+                            if (data.length > 0) {
+                                $.each(data, function (key, value) {
+                                    // Shaharlarni qo'shish
+                                    var isSelected = (value.id == "{{ object.city_id }}") ? 'selected' : '';
+                                    citySelect.append('<option value="' + value.id + '" ' + isSelected + '>' + value.name + '</option>');
+                                });
+                            } else {
+                                // Agar shaharlar bo'sh bo'lsa
+                                citySelect.append('<option value="">Select city</option>');
+                            }
+                        }
+                    });
+                } else {
+                    // Viloyat tanlanmagan bo'lsa, shahar selectni bo'satish
+                    citySelect.empty();
+                    citySelect.append('<option value="">Select region</option>');
+                }
+            });
+
+            // Sahifani yuklaganda viloyatni tanlash uchun
+            // change tuzatilishi kerak
+            regionSelect.trigger('change');
+        });
+    </script>
+
+    <script>
+        function validateInput(input) {
+            // Faqat raqamlarni qoldiramiz
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        function formatSalary() {
+            // Input elementini tanlab olamiz
+            var input = document.getElementById('id_salary');
+
+            if (input.value) {
+                // Kiritilgan qiymatni olish
+                var salary = input.value;
+
+                // Qiymatni raqamga o'girish va to'g'ri formatlash
+                var formattedSalary = parseFloat(salary.replace(/ /g, '').replace(/,/g, '').replace(/\./g, '').replace(/,/g, '.'));
+
+                // Ko'rsatish uchun "formattedSalary" o'zgaruvchisidan foydalanamiz
+                input.value = formattedSalary.toLocaleString('en-US');
+
+                // Input qiymatini yangilash
+                input.value = formattedSalary;
+            }
+        }
+    </script>
+
+
+
+{% endblock content %}

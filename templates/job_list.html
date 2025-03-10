@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Ishlar ro'yxati{% endblock title %}
+
+{% block content %}
+    <a href="{% url 'job_new' %}">Yangi ish qo'shish</a><br>
+    {% for job in object_list %}
+        <p>
+        {{ job.name }}<br>
+        {{ job.description }}<br>
+        {{ job.salary }} won
+<br>
+        Ishni boshlab tugatish vaqti: {{ job.start_time }} - {{ job.end_time }}<br>
+        {{ job.phone_number }}<br>
+        Viloyat: {{ job.region }} -> Shahar: {{ job.city }}<br>
+        {{ job.date }}
+        <br>
+        {{ job.author }}<br>
+        <a href="{% url 'job_detail' job.pk %}">Batafsil ko'rish</a>
+        </p>
+        <hr>
+    {% endfor %}
+{% endblock content %}

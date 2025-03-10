@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}{{ lang.site_login }}{% endblock title %}
+
+{% block content %}
+<div class="list-group marginuz">
+    <div class="list-group-item bg-detail text-dark">
+        {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+            {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+            {{ error }}<br>
+            {% endfor %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xxl-3">
+                <form method="post">{% csrf_token %}
+
+                    <label for="id_name" class="form-label">{{ lang.login }}</label>
+                    <input class="form-control" type="text" id="id_name" name="username" required style="text-transform: lowercase;">
+                    <br>
+                    <label for="id_name" class="form-label">{{ lang.password }}</label>
+                    <input class="form-control" type="password" id="id_name" name="password" required><br>
+                    <button type="submit" class="btn btn-primary">{{ lang.login_title }}</button>
+                    <br><br><a href="{% url 'registration' %}">{{ lang.register }}</a> | <a
+                        href="{% url 'password_reset' %}">{{ lang.forgot_password }}</a>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<style>
+    /* Kirish formasi qatorlari orasidagi bo'shliqni o'chirish */
+    form p {
+        margin: 0;
+    }
+</style>

@@ -1,0 +1,46 @@
+site_name=ALBASENG.COM
+
+########### FOR SUPPORT PAGE SOON! ###########
+
+########### Testing! ###########
+
+support_center=Support Center
+welcome=Welcome  
+our_telegram=Telegram
+our_instagram=Instagram
+quick_help_send_sms=Quick Help - Send SMS
+
+####### FOR HOME PAGE ###########
+
+piece=pcs
+stats=Statistics
+total_ads=Total Listings
+today_ads=Today's Listings
+stats_notice=These statistics include only active listings. Deleted listings after hiring are excluded from the statistics.
+latest_ads=Latest Listings
+support_site=Support
+select_region_notice=Select a region above to find jobs in your desired area!
+post_ad_notice=To post a listing, click the (+) button below!
+employers_notice=Dear employers! Please delete your listing after hiring is complete!
+
+########## LOGIN ###########
+
+site_login=Site Login
+login=Login
+login_title=Login
+password=Password
+register=Registration
+forgot_password=Forgot your password?
+login_error=Incorrect username or password! Please check and try again.
+
+####### REGISTRATION ##########
+
+kr_phone=010
+phone_number=Phone Number
+confirm_password=Confirm Password
+password_too_short=Password is too short. It must be at least 8 characters long.
+password_too_common=This password is too common.
+password_entirely_numeric=Password cannot consist of only numbers.
+password_too_similar=Password is too similar to the username. Please choose a different password!
+username_exists=A user with this username already exists. Please choose a different username!
+invalid_username=Invalid username! You can only use the following characters: @/./+/-/_
